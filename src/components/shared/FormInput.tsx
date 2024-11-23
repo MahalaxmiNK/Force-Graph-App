@@ -1,4 +1,5 @@
 import React, { FormEvent, ChangeEvent } from "react";
+import Button from "../../ui/Button";
 
 interface FormInputProps {
   value: string;
@@ -29,7 +30,7 @@ const FormInput: React.FC<FormInputProps> = ({
         onChange={handleInputChange}
         placeholder={placeholder}
       />
-      <button type="submit">{buttonText}</button>
+      <Button type="submit" text={buttonText} />
     </form>
   );
 };

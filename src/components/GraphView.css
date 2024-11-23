@@ -1,26 +1,62 @@
+/* General Layout */
 .page-container {
   padding: 1rem;
   background-color: #303849;
   color: #c1c3c7;
 }
 
-button {
-  color: black;
-  background-color: #ffb30f;
-  padding: 0.5rem 1rem;
-  text-decoration: none;
-  border-radius: 4px;
-  cursor: pointer;
-  display: inline-flex;
+/* Flexbox Layout for Graph and Node List */
+.main-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.graph-section {
+  flex: 2;
+  display: flex;
+  justify-content: center;
   align-items: center;
+  border: 1px solid #c1c3c7;
 }
 
-button:hover {
-  opacity: 0.8;
+.node-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-button svg {
-  margin-right: 0.5rem;
+/* Node List */
+ul.node-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.node-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  border-bottom: 1px solid #c1c3c7;
+}
+
+.node-label {
+  flex-grow: 1;
+}
+
+.edit-button,
+.delete-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  color: #ffb30f;
+}
+
+.edit-button:hover,
+.delete-button:hover {
+  color: #ff7f0f;
 }
 
 input[type="text"] {
@@ -29,51 +65,59 @@ input[type="text"] {
   border-radius: 4px;
   background-color: #303849;
   color: #c1c3c7;
-  margin-bottom: 1rem;
   width: 100%;
   max-width: 400px;
+  margin-right: 1rem;
 }
 
 button[type="submit"],
 button.add-node {
   padding: 10px 20px;
   background-color: #ffb30f;
-  color: black;
+  color: #000000;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
-button[type="submit"]:hover,
-button.add-node:hover {
-  opacity: 0.9;
-}
-
-.force-graph-container {
-  margin: 1rem 0;
+/* Edit Form */
+.edit-form {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #c1c3c7;
-  height: 600px;
-  width: 800px;
+  gap: 0.5rem;
+  margin-top: 1rem;
 }
 
-ul {
-  padding-left: 0;
-  list-style-type: none;
+.edit-form input {
+  flex: 1;
 }
 
-ul li {
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #c1c3c7;
+.add-node-form {
+  margin-bottom: 1rem;
 }
 
-ul li:last-child {
-  border-bottom: none;
+.save-button,
+.cancel-button,
+.back-button {
+  padding: 0.5rem 1rem;
+  background-color: #ffb30f;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-h2 {
-  color: #ffb30f;
-  font-size: 1.75rem;
+.save-button:hover,
+.cancel-button:hover {
+  opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+  }
+
+  .graph-section,
+  .node-section {
+    width: 100%;
+  }
 }

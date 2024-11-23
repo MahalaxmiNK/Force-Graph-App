@@ -1,4 +1,5 @@
 import React, { ChangeEvent } from "react";
+import useDebounce from "../../hooks/useDebounce";
 
 interface FilterInputProps {
   value: string;
@@ -13,6 +14,8 @@ const FilterInput: React.FC<FilterInputProps> = ({
   placeholder = "Search...",
   className,
 }) => {
+  const debouncedValue = useDebounce(value, 300);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
@@ -20,7 +23,7 @@ const FilterInput: React.FC<FilterInputProps> = ({
   return (
     <input
       type="text"
-      value={value}
+      value={debouncedValue}
       onChange={handleChange}
       placeholder={placeholder}
       className={className}

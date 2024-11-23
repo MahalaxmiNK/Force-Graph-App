@@ -1,0 +1,28 @@
+.button {
+  padding: 10px 20px;
+  background-color: #ffb30f;
+  color: #000000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.cancel {
+  padding: 10px 20px;
+  background-color: inherit;
+  color: #c1c3c7;
+  border: 1px solid #ffb30f;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.button:hover {
+  opacity: 0.8;
+}
+
+.button:disabled {
+  background-color: #c1c3c7;
+  cursor: not-allowed;
+}

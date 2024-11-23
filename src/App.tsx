@@ -1,8 +1,11 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import GraphList from "./components/GraphList";
-import GraphView from "./components/GraphView";
+import Loader from "./ui/Loader";
 import "./App.css";
+
+// Lazy load components
+const GraphList = lazy(() => import("./components/GraphList"));
+const GraphView = lazy(() => import("./components/GraphView"));
 
 const App: React.FC = () => {
   return (
@@ -15,10 +18,12 @@ const App: React.FC = () => {
       </header>
 
       <main>
-        <Routes>
-          <Route path="/" element={<GraphList />} />
-          <Route path="/graph/:id" element={<GraphView />} />
-        </Routes>
+        <Suspense fallback={<Loader />}>
+          <Routes>
+            <Route path="/" element={<GraphList />} />
+            <Route path="/graph/:id" element={<GraphView />} />
+          </Routes>
+        </Suspense>
       </main>
     </Router>
   );

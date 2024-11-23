@@ -19,7 +19,7 @@ header nav {
 }
 
 header nav a {
-  color: black;
+  color: #000000;
   background-color: #ffb30f;
   padding: 0.5rem 1rem;
   text-decoration: none;
