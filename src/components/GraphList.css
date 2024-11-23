@@ -1,0 +1,105 @@
+/* Container for the entire graph list */
+.graph-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 1rem;
+}
+
+.graph-list-form {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.graph-list-form input {
+  padding: 10px;
+  border: 1px solid #c1c3c7;
+  border-radius: 4px;
+  background-color: #303849;
+  color: #c1c3c7;
+}
+
+.graph-list-form button {
+  color: black;
+  background-color: #ffb30f;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.graph-list-form button:hover {
+  opacity: 0.9;
+}
+
+/* Filter input */
+.filter-input {
+  width: 17rem;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #c1c3c7;
+  border-radius: 4px;
+  background-color: #303849;
+  color: #c1c3c7;
+}
+
+/* Responsive filter input width */
+@media (max-width: 768px) {
+  .filter-input {
+    width: 100%; /* Full width on smaller screens */
+  }
+}
+
+/* Graph cards container */
+.graph-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* Individual card */
+.graph-card {
+  border: 1px solid #c1c3c7;
+  padding: 34px 24px 24px;
+  background-color: #303849;
+  color: #c1c3c7;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+}
+
+.graph-card:hover {
+  background-color: #c1c3c7;
+  color: #303849;
+}
+
+.graph-card:hover button {
+  color: #303849;
+}
+
+.graph-card h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.graph-card button {
+  border: none;
+  background: none;
+  color: #c1c3c7;
+  font-size: 1.5rem;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: color 0.3s ease;
+}
+
+.graph-card button:hover {
+  color: black;
+}

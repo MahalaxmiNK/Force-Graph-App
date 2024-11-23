@@ -31,13 +31,24 @@ export const handlers = [
   // Create graph
 
   http.post("/api/graphs", async ({ request }) => {
-    // Read the intercepted request body as JSON.
     const newGraph = (await request.json()) as Graph;
 
-    // Push the new post to the map of all posts.
-    allGraphs.set(newGraph?.id, newGraph);
+    // Setting the id
+    const highestId = Array.from(allGraphs.keys())
+      .map((id) => parseInt(id.replace("grph_", ""), 10))
+      .reduce((max, current) => (current > max ? current : max), 0);
+    const newId = `grph_${highestId + 1}`;
 
-    return HttpResponse.json(newGraph, { status: 201 });
+    const graphToCreate: Graph = {
+      id: newId,
+      name: newGraph.name,
+      data: newGraph.data,
+    };
+
+    // Save the new graph to the map
+    allGraphs.set(newId, graphToCreate);
+
+    return HttpResponse.json(graphToCreate, { status: 201 });
   }),
 
   //update graph
