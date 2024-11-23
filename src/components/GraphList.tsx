@@ -2,6 +2,9 @@ import React, { useState, useEffect, FormEvent } from "react";
 import { NavLink } from "react-router-dom";
 import { Graph } from "../models/graphModel";
 import { MdOutlineDelete } from "react-icons/md";
+import FilterInput from "./shared/FilterInput";
+import FormInput from "./shared/FormInput";
+import { fetchGraphs, createGraph, deleteGraph } from "../services/apiService";
 import "./GraphList.css";
 
 const GraphList: React.FC = () => {
@@ -9,17 +12,17 @@ const GraphList: React.FC = () => {
   const [filter, setFilter] = useState<string>("");
   const [newGraphName, setNewGraphName] = useState<string>("");
 
-  const fetchGraphs = async () => {
-    const response = await fetch("/api/graphs");
-    setGraphs(await response.json());
+  const loadGraphs = async () => {
+    try {
+      const data = await fetchGraphs();
+      setGraphs(data);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to load graphs");
+    }
   };
 
-  const deleteGraph = async (id: string) => {
-    await fetch(`/api/graphs/${id}`, { method: "DELETE" });
-    fetchGraphs();
-  };
-
-  const createGraph = async (e: FormEvent) => {
+  const handleCreateGraph = async (e: FormEvent) => {
     e.preventDefault();
     if (!newGraphName.trim()) {
       alert("Graph name cannot be empty!");
@@ -28,23 +31,31 @@ const GraphList: React.FC = () => {
     const newGraph: Graph = {
       id: "",
       name: newGraphName,
-      data: {
-        nodes: [],
-        edges: [],
-      },
+      data: { nodes: [], edges: [] },
     };
-    await fetch("/api/graphs", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newGraph),
-    });
 
-    setNewGraphName("");
-    fetchGraphs();
+    try {
+      await createGraph(newGraph);
+      setNewGraphName("");
+      loadGraphs();
+    } catch (error) {
+      console.error(error);
+      alert("Failed to create graph");
+    }
+  };
+
+  const handleDeleteGraph = async (id: string) => {
+    try {
+      await deleteGraph(id);
+      loadGraphs();
+    } catch (error) {
+      console.error(error);
+      alert("Failed to delete graph");
+    }
   };
 
   useEffect(() => {
-    fetchGraphs();
+    loadGraphs();
   }, []);
 
   const filteredGraphs = graphs.filter((graph) =>
@@ -54,23 +65,20 @@ const GraphList: React.FC = () => {
   return (
     <div className="graph-list-container">
       <h2>Graphs</h2>
-      <input
-        className="filter-input"
-        type="text"
+      <FilterInput
         value={filter}
-        onChange={(e) => setFilter(e.target.value)}
+        onChange={setFilter}
         placeholder="Filter by name"
+        className="filter-input"
       />
-      <form className="graph-list-form" onSubmit={createGraph}>
-        <input
-          type="text"
-          value={newGraphName}
-          onChange={(e) => setNewGraphName(e.target.value)}
-          placeholder="New Graph Name"
-        />
-        <button type="submit">Add Graph</button>
-      </form>
-
+      <FormInput
+        value={newGraphName}
+        onChange={setNewGraphName}
+        onSubmit={handleCreateGraph}
+        buttonText="Add Graph"
+        placeholder="New Graph Name"
+        className="graph-list-form"
+      />
       <div className="graph-cards">
         {filteredGraphs.map((graph) => (
           <NavLink
@@ -82,8 +90,8 @@ const GraphList: React.FC = () => {
             <button
               type="button"
               onClick={(e) => {
-                e.preventDefault(); // Prevent Link navigation on button click
-                deleteGraph(graph.id);
+                e.preventDefault(); // Prevent navigation
+                handleDeleteGraph(graph.id);
               }}
             >
               <MdOutlineDelete />

@@ -1,8 +1,11 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Graph, Node } from "../models/graphModel";
 import { ForceGraph2D } from "react-force-graph";
 import { HiChevronLeft } from "react-icons/hi";
+import FilterInput from "./shared/FilterInput";
+import FormInput from "./shared/FormInput";
+import { fetchGraphById } from "../services/apiService";
 import "./GraphView.css";
 
 const GraphView: React.FC = () => {
@@ -12,43 +15,34 @@ const GraphView: React.FC = () => {
   const [newNode, setNewNode] = useState<string>("");
   const [nodeFilter, setNodeFilter] = useState<string>("");
 
-  // Fetch graph data
   useEffect(() => {
-    // to be moved
-    const fetchGraph = async () => {
+    const loadGraph = async () => {
       try {
-        const response = await fetch(`/api/graphs/${id}`);
-        if (response.ok) {
-          const data = await response.json();
-          setGraph(data);
-        } else {
-          alert("Graph not found");
-          navigate("/");
-        }
+        const data = await fetchGraphById(id!);
+        setGraph(data);
       } catch (error) {
-        console.error("Error fetching graph:", error);
-        alert("An error occurred while loading the graph.");
+        console.error(error);
+        alert("Failed to load graph");
+        navigate("/");
       }
     };
 
-    fetchGraph();
+    loadGraph();
   }, [id, navigate]);
 
   if (!graph) return <p>Loading...</p>;
 
-  // Add a new node
-  const addNode = () => {
+  const addNode = (e: React.FormEvent) => {
+    e.preventDefault();
     const trimmedNode = newNode.trim();
     if (!trimmedNode) {
       alert("Node name cannot be empty");
       return;
     }
-
     if (graph.data.nodes.some((node) => node.label === trimmedNode)) {
       alert("A node with this label already exists");
       return;
     }
-
     const newNodeData: Node = { id: `node_${Date.now()}`, label: trimmedNode };
     setGraph((prev) => {
       if (!prev) return null;
@@ -60,8 +54,6 @@ const GraphView: React.FC = () => {
     setNewNode("");
   };
 
-  // Filter nodes by search input
-  // to be moved
   const filteredNodes = graph.data.nodes.filter((node) =>
     node.label.toLowerCase().includes(nodeFilter.toLowerCase())
   );
@@ -73,33 +65,20 @@ const GraphView: React.FC = () => {
         Back to Graph List
       </button>
       <h2>{graph.name}</h2>
-      <div style={{ margin: "1rem 0" }}>
-        <input
-          type="text"
-          value={newNode}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setNewNode(e.target.value)
-          }
-          placeholder="Enter new node name"
-        />
-        <button onClick={addNode} className="add-node">
-          Add Node
-        </button>
-      </div>
-
-      {/* Node Search */}
-      <div style={{ margin: "1rem 0" }}>
-        <input
-          type="text"
-          value={nodeFilter}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setNodeFilter(e.target.value)
-          }
-          placeholder="Search nodes"
-        />
-      </div>
-
-      {/* Force Graph */}
+      <FormInput
+        value={newNode}
+        onChange={setNewNode}
+        onSubmit={addNode}
+        buttonText="Add Node"
+        placeholder="Enter new node name"
+        className="add-node-form"
+      />
+      <FilterInput
+        value={nodeFilter}
+        onChange={setNodeFilter}
+        placeholder="Search nodes"
+        className="filter-input"
+      />
       <div className="force-graph-container">
         <ForceGraph2D
           graphData={{
@@ -113,7 +92,6 @@ const GraphView: React.FC = () => {
           linkColor={() => "#c1c3c7"}
         />
       </div>
-
       <ul>
         {filteredNodes.map((node) => (
           <li key={node.id}>{node.label}</li>
