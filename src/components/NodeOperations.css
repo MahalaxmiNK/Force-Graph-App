@@ -4,10 +4,10 @@
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  background-color: #1d242a; /* Main background */
-  color: #ffffff; /* Accessible text color */
+  background-color: var(--color-tertiary);
+  color: var(--color-text);
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Node List */
@@ -15,9 +15,9 @@ ul.node-list {
   list-style-type: none;
   padding: 0;
   margin: 1rem 0;
-  max-height: 400px; /* Limit height for overflow */
-  overflow-y: auto; /* Enable scrolling */
-  scrollbar-width: thin; /* Firefox-specific scrollbar styling */
+  max-height: 400px;
+  overflow-y: auto;
+  scrollbar-width: thin;
 }
 
 .node-item {
@@ -26,26 +26,26 @@ ul.node-list {
   justify-content: space-between;
   padding: 0.5rem;
   margin-bottom: 0.5rem;
-  border: 1px solid #303849; /* Border for separation */
+  border: 1px solid var(--color-secondary);
   border-radius: 6px;
-  background-color: #1d242a; /* Item background matches main */
+  background-color: var(--color-tertiary);
   gap: 0.5rem;
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .node-item:hover {
-  background-color: #303849; /* Slightly brighter background on hover */
-  transform: translateY(-2px); /* Subtle lift effect */
-  cursor: pointer; /* Change cursor to indicate interactivity */
+  background-color: var(--color-secondary);
+  transform: translateY(-2px);
+  cursor: pointer;
 }
 
 .node-label {
-  flex: 1; /* Allow label to take available space */
-  white-space: nowrap; /* Prevent wrapping */
-  overflow: hidden; /* Hide overflow */
-  text-overflow: ellipsis; /* Add ellipsis for long text */
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   padding-right: 1rem;
-  color: #ffffff; /* Text remains accessible */
+  color: var(--color-text);
 }
 
 .edit-button,
@@ -55,58 +55,23 @@ ul.node-list {
   cursor: pointer;
   margin-left: 0.5rem;
   font-size: 1rem;
-  color: #ffb30f; /* Primary accent color */
+  color: var(--color-primary);
   transition: color 0.3s ease;
 }
 
 .edit-button:hover,
 .delete-button:hover {
-  color: #ffffff; /* Hover switches to accessible contrast */
+  color: var(--color-text);
 }
 
-/* input[type="text"] {
-  flex: 1; 
-  padding: 8px;
-  border: 1px solid #303849;
-  border-radius: 4px;
-  background-color: #1d242a;
-  color: #ffffff;
-} */
-
-.filter-input-style {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid #303849;
-  border-radius: 4px;
-  background-color: #1d242a;
-  color: #ffffff;
-}
-
+.filter-input-style,
 .add-node-form input {
   flex: 1;
   padding: 8px;
-  border: 1px solid #303849;
+  border: 1px solid var(--color-secondary);
   border-radius: 4px;
-  background-color: #1d242a;
-  color: #ffffff;
-}
-
-button[type="submit"],
-button.add-node {
-  padding: 0.5rem 1rem;
-  background-color: #ffb30f; /* Primary button color */
-  color: #1d242a; /* Accessible contrast on yellow */
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-button[type="submit"]:hover,
-button.add-node:hover {
-  background-color: #ffffff; /* Hover color */
-  color: #303849; /* Accessible text color */
+  background-color: var(--color-tertiary);
+  color: var(--color-text);
 }
 
 .add-node-form {
@@ -126,22 +91,21 @@ button.add-node:hover {
 
 .edit-form input {
   padding: 8px;
-  border: 1px solid #303849;
+  border: 1px solid var(--color-secondary);
   border-radius: 4px;
-  background-color: #1d242a;
-  color: #ffffff;
+  background-color: var(--color-tertiary);
+  color: var(--color-text);
   margin-right: 20px;
 }
 
 .save-button,
 .cancel-button {
   padding: 0.5rem 1rem;
-  background-color: #ffb30f; /* Matches primary button color */
+  background-color: var(--color-primary);
   border: none;
   border-radius: 6px;
-  color: #1d242a;
+  color: var(--color-text-dark);
   cursor: pointer;
-  font-weight: bold;
   transition: background-color 0.3s ease;
 }
 
@@ -153,8 +117,8 @@ button.add-node:hover {
 
 .save-button:hover,
 .cancel-button:hover {
-  background-color: #ffffff; /* Hover background for buttons */
-  color: #303849; /* Accessible hover contrast */
+  background-color: var(--color-text);
+  color: var(--color-secondary);
 }
 
 /* Responsive Design */
@@ -167,11 +131,11 @@ button.add-node:hover {
 
   .edit-button,
   .delete-button {
-    font-size: 1.2rem; /* Larger buttons for better touch targets */
+    font-size: 1.2rem;
   }
 
   .node-label {
-    white-space: normal; /* Allow wrapping on smaller screens */
+    white-space: normal;
     overflow: visible;
     text-overflow: unset;
   }

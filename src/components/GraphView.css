@@ -1,11 +1,9 @@
-/* General Layout */
 .page-container {
   padding: 1rem;
-  background-color: #303849;
-  color: #c1c3c7;
+  background-color: var(--color-secondary);
+  color: var(--color-muted);
 }
 
-/* Flexbox Layout for Graph and Node List */
 .main-content {
   display: flex;
   flex-wrap: wrap;
@@ -17,8 +15,8 @@
 }
 
 .back-button {
-  color: #000000;
-  background-color: #ffb30f;
+  color: var(--color-text-dark);
+  background-color: var(--color-primary);
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
@@ -30,8 +28,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* border: 1px solid #c1c3c7; */
-  background-color: #1d242a; /* Main background */
+  background-color: var(--color-tertiary);
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

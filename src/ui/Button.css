@@ -1,28 +1,27 @@
 .button {
-  padding: 10px 20px;
-  background-color: #ffb30f;
-  color: #000000;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-primary);
+  color: var(--color-text-dark);
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
+  border-radius: var(--border-radius-sm);
+  transition: opacity var(--transition-fast);
 }
 
 .cancel {
-  padding: 10px 20px;
+  padding: var(--spacing-sm) var(--spacing-md);
   background-color: inherit;
-  color: #c1c3c7;
-  border: 1px solid #ffb30f;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
+  color: var(--color-muted);
+  border: var(--border-width) solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  transition: opacity var(--transition-fast);
 }
 
-.button:hover {
+.button:hover,
+.cancel:hover {
   opacity: 0.8;
 }
 
 .button:disabled {
-  background-color: #c1c3c7;
+  background-color: var(--color-muted);
   cursor: not-allowed;
 }
