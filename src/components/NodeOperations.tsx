@@ -93,69 +93,77 @@ const NodeOperations: React.FC<NodeOperationsProps> = ({ graph, setGraph }) => {
 
   return (
     <div className="node-section">
-      <FilterInput
-        value={nodeFilter}
-        onChange={setNodeFilter}
-        placeholder="Search nodes"
-        className="filter-input"
-        aria-label="Filter nodes"
-      />
-      <FormInput
-        value={newNode}
-        onChange={setNewNode}
-        onSubmit={addNode}
-        buttonText="Add Node"
-        placeholder="Enter new node name"
-        className="add-node-form"
-      />
+      <div className="input-section">
+        <FilterInput
+          value={nodeFilter}
+          onChange={setNodeFilter}
+          placeholder="Search nodes"
+          className="filter-input-style"
+          aria-label="Filter nodes"
+        />
+        <FormInput
+          value={newNode}
+          onChange={setNewNode}
+          onSubmit={addNode}
+          buttonText="Add Node"
+          placeholder="Enter new node name"
+          className="add-node-form"
+        />
+      </div>
+
+      <h3>Nodes</h3>
 
       <ul className="node-list">
         {filteredNodes.map((node) => (
           <li key={node.id} tabIndex={0} role="listitem" className="node-item">
-            <span className="node-label">{node.label}</span>
-            <button
-              onClick={() => {
-                setEditingNode(node);
-                setEditNodeValue(node.label);
-              }}
-              aria-label={`Edit node ${node.label}`}
-              className="edit-button"
-            >
-              ✏️
-            </button>
-            <button
-              onClick={() => deleteNode(node.id)}
-              aria-label={`Delete node ${node.label}`}
-              className="delete-button"
-            >
-              🗑
-            </button>
+            <span className="node-label" title={node.label}>
+              {node.label}
+            </span>
+            <div className="node-actions">
+              <button
+                onClick={() => {
+                  setEditingNode(node);
+                  setEditNodeValue(node.label);
+                }}
+                aria-label={`Edit node ${node.label}`}
+                className="edit-button"
+              >
+                ✏️
+              </button>
+              <button
+                onClick={() => deleteNode(node.id)}
+                aria-label={`Delete node ${node.label}`}
+                className="delete-button"
+              >
+                🗑
+              </button>
+            </div>
+            {editingNode?.id === node.id && (
+              <div className="edit-form">
+                <FormInput
+                  value={editNodeValue}
+                  onChange={setEditNodeValue}
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    editNode();
+                  }}
+                  buttonText="Save"
+                  placeholder="Edit node name"
+                />
+                <Button
+                  text="Cancel"
+                  type="reset"
+                  ariaLabel="Cancel"
+                  onClick={() => {
+                    setEditingNode(null);
+                    setEditNodeValue("");
+                  }}
+                />
+              </div>
+            )}
           </li>
         ))}
       </ul>
-      {editingNode && (
-        <div className="edit-form">
-          <FormInput
-            value={editNodeValue}
-            onChange={setEditNodeValue}
-            onSubmit={(e) => {
-              e.preventDefault();
-              editNode();
-            }}
-            buttonText="Save"
-            placeholder="Edit node name"
-          />
-          <Button
-            text="Cancel"
-            type="reset"
-            ariaLabel="Cancel"
-            onClick={() => {
-              setEditingNode(null);
-              setEditNodeValue("");
-            }}
-          />
-        </div>
-      )}
     </div>
   );
 };

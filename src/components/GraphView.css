@@ -12,10 +12,26 @@
   gap: 1rem;
 }
 
+.arrow {
+  margin-right: 5px;
+}
+
+.back-button {
+  color: #000000;
+  background-color: #ffb30f;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 .graph-section {
   flex: 2;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #c1c3c7;
+  /* border: 1px solid #c1c3c7; */
+  background-color: #1d242a; /* Main background */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }

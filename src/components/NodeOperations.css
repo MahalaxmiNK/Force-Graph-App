@@ -1,7 +1,13 @@
+/* Node Section */
 .node-section {
   flex: 1;
   display: flex;
   flex-direction: column;
+  padding: 1rem;
+  background-color: #1d242a; /* Main background */
+  color: #ffffff; /* Accessible text color */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 /* Node List */
@@ -9,6 +15,9 @@ ul.node-list {
   list-style-type: none;
   padding: 0;
   margin: 1rem 0;
+  max-height: 400px; /* Limit height for overflow */
+  overflow-y: auto; /* Enable scrolling */
+  scrollbar-width: thin; /* Firefox-specific scrollbar styling */
 }
 
 .node-item {
@@ -16,11 +25,20 @@ ul.node-list {
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem;
-  border-bottom: 1px solid #c1c3c7;
+  margin-bottom: 0.5rem;
+  border: 1px solid #303849; /* Border for separation */
+  border-radius: 6px;
+  background-color: #1d242a; /* Item background matches main */
+  gap: 0.5rem;
 }
 
 .node-label {
-  flex-grow: 1;
+  flex: 1; /* Allow label to take available space */
+  white-space: nowrap; /* Prevent wrapping */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Add ellipsis for long text */
+  padding-right: 1rem;
+  color: #ffffff; /* Text remains accessible */
 }
 
 .edit-button,
@@ -29,45 +47,62 @@ ul.node-list {
   background: none;
   cursor: pointer;
   margin-left: 0.5rem;
-  color: #ffb30f;
+  font-size: 1rem;
+  color: #ffb30f; /* Primary accent color */
+  transition: color 0.3s ease;
 }
 
 .edit-button:hover,
 .delete-button:hover {
-  color: #ff7f0f;
+  color: #ffffff; /* Hover switches to accessible contrast */
 }
 
-input[type="text"] {
-  padding: 10px;
-  border: 1px solid #c1c3c7;
+/* input[type="text"] {
+  flex: 1; 
+  padding: 8px;
+  border: 1px solid #303849;
   border-radius: 4px;
-  background-color: #303849;
-  color: #c1c3c7;
-  max-width: 400px;
+  background-color: #1d242a;
+  color: #ffffff;
+} */
+
+.filter-input-style {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #303849;
+  border-radius: 4px;
+  background-color: #1d242a;
+  color: #ffffff;
+}
+
+.add-node-form input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #303849;
+  border-radius: 4px;
+  background-color: #1d242a;
+  color: #ffffff;
 }
 
 button[type="submit"],
 button.add-node {
-  padding: 10px 20px;
-  background-color: #ffb30f;
-  color: #000000;
+  padding: 0.5rem 1rem;
+  background-color: #ffb30f; /* Primary button color */
+  color: #1d242a; /* Accessible contrast on yellow */
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
-/* Edit Form */
-.edit-form {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 1rem;
+button[type="submit"]:hover,
+button.add-node:hover {
+  background-color: #ffffff; /* Hover color */
+  color: #303849; /* Accessible text color */
 }
 
-.edit-form input {
-  flex: 1;
-}
-
-.add-node-form .edit-form {
+.add-node-form {
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -75,29 +110,62 @@ button.add-node {
   flex-wrap: wrap;
 }
 
-.save-button,
-.cancel-button,
-.back-button {
-  padding: 0.5rem 1rem;
-  background-color: #ffb30f;
-  border: none;
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.edit-form input {
+  padding: 8px;
+  border: 1px solid #303849;
   border-radius: 4px;
+  background-color: #1d242a;
+  color: #ffffff;
+  margin-right: 20px;
+}
+
+.save-button,
+.cancel-button {
+  padding: 0.5rem 1rem;
+  background-color: #ffb30f; /* Matches primary button color */
+  border: none;
+  border-radius: 6px;
+  color: #1d242a;
   cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .save-button:hover,
 .cancel-button:hover {
-  opacity: 0.8;
+  background-color: #ffffff; /* Hover background for buttons */
+  color: #303849; /* Accessible hover contrast */
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .main-content {
+  .node-item {
     flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 
-  .graph-section,
-  .node-section {
-    width: 100%;
+  .edit-button,
+  .delete-button {
+    font-size: 1.2rem; /* Larger buttons for better touch targets */
+  }
+
+  .node-label {
+    white-space: normal; /* Allow wrapping on smaller screens */
+    overflow: visible;
+    text-overflow: unset;
   }
 }

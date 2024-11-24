@@ -35,6 +35,8 @@ const GraphView: React.FC = () => {
         aria-label="Back to Graph List"
         className="back-button"
       >
+        {" "}
+        <span className="arrow">&#8592;</span>
         Back to Graph List
       </button>
       <h2>{graph.name}</h2>
