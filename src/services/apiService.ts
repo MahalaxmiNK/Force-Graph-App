@@ -1,5 +1,5 @@
 // src/services/apiService.ts
-import { Graph } from "../models/graphModel";
+import { Graph, Node } from "../models/graphModel";
 
 // Fetch all graphs
 export const fetchGraphs = async (): Promise<Graph[]> => {
@@ -35,13 +35,18 @@ export const deleteGraph = async (id: string): Promise<void> => {
 export const createNode = async (
   graphId: string,
   node: Node
-): Promise<void> => {
+): Promise<Node> => {
   const response = await fetch(`/api/graphs/${graphId}/nodes`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(node),
   });
-  if (!response.ok) throw new Error("Failed to create node");
+
+  if (!response.ok) {
+    throw new Error("Failed to create node");
+  }
+
+  return await response.json(); // Return the created node with the generated ID
 };
 
 // Update a node in a graph

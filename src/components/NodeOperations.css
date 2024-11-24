@@ -1,0 +1,103 @@
+.node-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Node List */
+ul.node-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.node-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  border-bottom: 1px solid #c1c3c7;
+}
+
+.node-label {
+  flex-grow: 1;
+}
+
+.edit-button,
+.delete-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  color: #ffb30f;
+}
+
+.edit-button:hover,
+.delete-button:hover {
+  color: #ff7f0f;
+}
+
+input[type="text"] {
+  padding: 10px;
+  border: 1px solid #c1c3c7;
+  border-radius: 4px;
+  background-color: #303849;
+  color: #c1c3c7;
+  max-width: 400px;
+}
+
+button[type="submit"],
+button.add-node {
+  padding: 10px 20px;
+  background-color: #ffb30f;
+  color: #000000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Edit Form */
+.edit-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.edit-form input {
+  flex: 1;
+}
+
+.add-node-form .edit-form {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.save-button,
+.cancel-button,
+.back-button {
+  padding: 0.5rem 1rem;
+  background-color: #ffb30f;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-button:hover,
+.cancel-button:hover {
+  opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+  }
+
+  .graph-section,
+  .node-section {
+    width: 100%;
+  }
+}

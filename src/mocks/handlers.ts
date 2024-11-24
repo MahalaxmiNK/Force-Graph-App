@@ -84,11 +84,13 @@ export const handlers = [
     async ({ params, request }) => {
       const { id } = params;
       const graph = allGraphs.get(id);
+
       if (!graph) {
         return new HttpResponse(null, { status: 404 });
       }
 
       const newNode = (await request.json()) as Node;
+
       if (!newNode.label || newNode.label.trim() === "") {
         return new HttpResponse(null, {
           status: 400,
@@ -96,7 +98,18 @@ export const handlers = [
         });
       }
 
-      // Generate a new node ID
+      // Check for duplicate labels
+      const isDuplicate = graph.data.nodes.some(
+        (node) => node.label.toLowerCase() === newNode.label.toLowerCase()
+      );
+      if (isDuplicate) {
+        return new HttpResponse(null, {
+          status: 400,
+          statusText: "A node with this label already exists",
+        });
+      }
+
+      // Generate a new unique node ID
       const highestNodeId = graph.data.nodes
         .map((node) => parseInt(node.id.replace("nd_", ""), 10))
         .reduce((max, current) => (current > max ? current : max), 0);
@@ -106,6 +119,7 @@ export const handlers = [
 
       // Add the node to the graph
       graph.data.nodes.push(nodeToCreate);
+
       return HttpResponse.json(nodeToCreate, { status: 201 });
     }
   ),
