@@ -12,7 +12,7 @@
 }
 
 .modal-content {
-  background: #fff;
+  background: var(--color-muted);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -28,8 +28,9 @@
   border: none;
   font-size: 20px;
   cursor: pointer;
+  color: var(--color-secondary);
 }
 
 .close-button:hover {
-  color: red;
+  color: var(--color-primary);
 }
