@@ -5,13 +5,13 @@
   padding: 1rem;
 }
 
-.graph-list-form {
+/* .graph-list-form {
   display: flex;
   flex-direction: row;
   gap: 10px;
   margin-bottom: 20px;
   flex-wrap: wrap;
-}
+} */
 
 .graph-list-form input {
   padding: 10px;
@@ -19,6 +19,7 @@
   border-radius: 4px;
   background-color: #303849;
   color: #c1c3c7;
+  margin-right: 10px;
 }
 
 .graph-list-form button {

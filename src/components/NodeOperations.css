@@ -30,6 +30,13 @@ ul.node-list {
   border-radius: 6px;
   background-color: #1d242a; /* Item background matches main */
   gap: 0.5rem;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+.node-item:hover {
+  background-color: #303849; /* Slightly brighter background on hover */
+  transform: translateY(-2px); /* Subtle lift effect */
+  cursor: pointer; /* Change cursor to indicate interactivity */
 }
 
 .node-label {

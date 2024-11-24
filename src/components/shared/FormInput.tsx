@@ -1,5 +1,6 @@
-import React, { FormEvent, ChangeEvent } from "react";
+import { ChangeEvent, FormEvent } from "react";
 import Button from "../../ui/Button";
+import "./FormInput.css";
 
 interface FormInputProps {
   value: string;
@@ -8,6 +9,7 @@ interface FormInputProps {
   buttonText: string;
   onSubmit: (e: FormEvent) => void;
   className?: string;
+  errorMessage?: string; // Add this prop
 }
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -17,6 +19,7 @@ const FormInput: React.FC<FormInputProps> = ({
   buttonText,
   onSubmit,
   className,
+  errorMessage,
 }) => {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
@@ -29,8 +32,16 @@ const FormInput: React.FC<FormInputProps> = ({
         value={value}
         onChange={handleInputChange}
         placeholder={placeholder}
+        aria-describedby={errorMessage ? "error-message" : undefined}
+        aria-invalid={!!errorMessage}
+        className={errorMessage ? "input-error" : ""}
       />
       <Button type="submit" text={buttonText} />
+      {errorMessage && (
+        <p id="error-message" className="error-message">
+          {errorMessage}
+        </p>
+      )}
     </form>
   );
 };

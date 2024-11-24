@@ -25,6 +25,7 @@ const NodeOperations: React.FC<NodeOperationsProps> = ({ graph, setGraph }) => {
   const [nodeFilter, setNodeFilter] = useState<string>("");
   const [editingNode, setEditingNode] = useState<Node | null>(null);
   const [editNodeValue, setEditNodeValue] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleGraphUpdate = (updater: (graph: Graph) => Graph) => {
     setGraph((prev) => (prev ? updater(prev) : prev));
@@ -35,12 +36,12 @@ const NodeOperations: React.FC<NodeOperationsProps> = ({ graph, setGraph }) => {
     const trimmedNode = newNode.trim();
 
     if (!trimmedNode) {
-      alert("Node name cannot be empty");
+      setErrorMessage("Node name cannot be empty!");
       return;
     }
 
     if (graph.data.nodes.some((node) => node.label === trimmedNode)) {
-      alert("A node with this label already exists");
+      setErrorMessage("A node with this label already exists");
       return;
     }
 
@@ -52,6 +53,7 @@ const NodeOperations: React.FC<NodeOperationsProps> = ({ graph, setGraph }) => {
 
       handleGraphUpdate((g) => addNodeToGraph(g, createdNode));
       setNewNode(""); // Clear input field
+      setErrorMessage("");
     } catch (error) {
       console.error("Error adding node:", error);
       alert("Failed to add node");
@@ -60,7 +62,7 @@ const NodeOperations: React.FC<NodeOperationsProps> = ({ graph, setGraph }) => {
 
   const editNode = async () => {
     if (!editNodeValue.trim()) {
-      alert("Node name cannot be empty");
+      setErrorMessage("Node name cannot be empty");
       return;
     }
 
@@ -103,11 +105,15 @@ const NodeOperations: React.FC<NodeOperationsProps> = ({ graph, setGraph }) => {
         />
         <FormInput
           value={newNode}
-          onChange={setNewNode}
+          onChange={(value) => {
+            setNewNode(value);
+            setErrorMessage("");
+          }}
           onSubmit={addNode}
           buttonText="Add Node"
           placeholder="Enter new node name"
           className="add-node-form"
+          errorMessage={errorMessage}
         />
       </div>
 
@@ -142,13 +148,17 @@ const NodeOperations: React.FC<NodeOperationsProps> = ({ graph, setGraph }) => {
               <div className="edit-form">
                 <FormInput
                   value={editNodeValue}
-                  onChange={setEditNodeValue}
+                  onChange={(value) => {
+                    setEditNodeValue(value);
+                    setErrorMessage("");
+                  }}
                   onSubmit={(e) => {
                     e.preventDefault();
                     editNode();
                   }}
                   buttonText="Save"
                   placeholder="Edit node name"
+                  errorMessage={errorMessage}
                 />
                 <Button
                   text="Cancel"

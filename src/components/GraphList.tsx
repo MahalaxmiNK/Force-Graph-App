@@ -10,6 +10,7 @@ const GraphList: React.FC = () => {
   const [graphs, setGraphs] = useState<Graph[]>([]);
   const [filter, setFilter] = useState<string>("");
   const [newGraphName, setNewGraphName] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const loadGraphs = useCallback(async () => {
     try {
@@ -25,7 +26,7 @@ const GraphList: React.FC = () => {
     async (e: FormEvent) => {
       e.preventDefault();
       if (!newGraphName.trim()) {
-        alert("Graph name cannot be empty!");
+        setErrorMessage("Graph name cannot be empty!");
         return;
       }
       const newGraph: Graph = {
@@ -37,6 +38,7 @@ const GraphList: React.FC = () => {
       try {
         await createGraph(newGraph);
         setNewGraphName("");
+        setErrorMessage("");
         loadGraphs();
       } catch (error) {
         console.error(error);
@@ -78,11 +80,15 @@ const GraphList: React.FC = () => {
       />
       <FormInput
         value={newGraphName}
-        onChange={setNewGraphName}
+        onChange={(value) => {
+          setNewGraphName(value);
+          setErrorMessage(""); // Clear error message on input change
+        }}
         onSubmit={handleCreateGraph}
         buttonText="Add Graph"
         placeholder="New Graph Name"
         className="graph-list-form"
+        errorMessage={errorMessage}
       />
       <div className="graph-cards">
         {filteredGraphs.map((graph) => (
