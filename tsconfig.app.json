@@ -21,7 +21,12 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "types": ["vite/client", "vitest/globals", "@testing-library/jest-dom"]
+    "types": [
+      "vite/client",
+      "vitest/globals",
+      "@testing-library/jest-dom",
+      "vitest"
+    ]
   },
-  "include": ["src", "tests/ui/Loader.test.tsx"]
+  "include": ["src", "tests/**/*.test.tsx", "tests/**/*.test.ts"]
 }

@@ -11,6 +11,11 @@ export default defineConfig({
       provider: "v8", // Or 'istanbul' for coverage reporting
       reporter: ["text", "json", "html"],
     },
+    server: {
+      deps: {
+        inline: ["aframe-extras"], // Inline aframe-extras package
+      },
+    },
     setupFiles: ["./vitest.setup.ts"], // Setup file for global imports
     include: ["tests/**/*.test.tsx", "tests/**/*.test.ts"], // Test file patterns
     exclude: [...configDefaults.exclude], // Exclude default directories

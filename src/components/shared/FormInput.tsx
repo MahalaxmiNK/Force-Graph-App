@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import Button from "../../ui/Button";
 import "./FormInput.css";
 
@@ -9,8 +9,12 @@ interface FormInputProps {
   buttonText: string;
   onSubmit: (e: FormEvent) => void;
   className?: string;
-  errorMessage?: string; // Add this prop
+  errorMessage?: string;
 }
+
+const sanitizeInput = (input: string): string => {
+  return input.replace(/[^a-zA-Z0-9\s]/g, ""); // Allows letters, numbers, and spaces
+};
 
 const FormInput: React.FC<FormInputProps> = ({
   value,
@@ -21,15 +25,20 @@ const FormInput: React.FC<FormInputProps> = ({
   className,
   errorMessage,
 }) => {
+  const [sanitizedValue, setSanitizedValue] = useState(value);
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value);
+    const rawValue = e.target.value;
+    const sanitized = sanitizeInput(rawValue);
+    setSanitizedValue(sanitized);
+    onChange(sanitized);
   };
 
   return (
-    <form className={className} onSubmit={onSubmit}>
+    <form className={className} onSubmit={onSubmit} role="form">
       <input
         type="text"
-        value={value}
+        value={sanitizedValue}
         onChange={handleInputChange}
         placeholder={placeholder}
         aria-describedby={errorMessage ? "error-message" : undefined}

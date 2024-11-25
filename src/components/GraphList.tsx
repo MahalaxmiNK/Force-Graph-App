@@ -5,6 +5,7 @@ import FilterInput from "./shared/FilterInput";
 import FormInput from "./shared/FormInput";
 import { fetchGraphs, createGraph, deleteGraph } from "../services/apiService";
 import "./GraphList.css";
+import { useFilteredItems } from "../hooks/useFilteredItems";
 
 const GraphList: React.FC = () => {
   const [graphs, setGraphs] = useState<Graph[]>([]);
@@ -65,9 +66,7 @@ const GraphList: React.FC = () => {
     loadGraphs();
   }, [loadGraphs]);
 
-  const filteredGraphs = graphs.filter((graph) =>
-    graph.name.toLowerCase().includes(filter.toLowerCase())
-  );
+  const filteredGraphs = useFilteredItems(graphs, filter, "name");
 
   return (
     <section className="graph-list-container" aria-label="Graph List Section">
@@ -82,7 +81,7 @@ const GraphList: React.FC = () => {
         value={newGraphName}
         onChange={(value) => {
           setNewGraphName(value);
-          setErrorMessage(""); // Clear error message on input change
+          setErrorMessage("");
         }}
         onSubmit={handleCreateGraph}
         buttonText="Add Graph"

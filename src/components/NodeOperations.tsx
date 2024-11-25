@@ -14,6 +14,7 @@ import Button from "../ui/Button";
 import FormInput from "./shared/FormInput";
 import FilterInput from "./shared/FilterInput";
 import "./NodeOperations.css";
+import { useFilteredItems } from "../hooks/useFilteredItems";
 
 interface NodeOperationsProps {
   graph: Graph;
@@ -89,9 +90,7 @@ const NodeOperations: React.FC<NodeOperationsProps> = ({ graph, setGraph }) => {
     }
   };
 
-  const filteredNodes = graph.data.nodes.filter((node) =>
-    node.label.toLowerCase().includes(nodeFilter.toLowerCase())
-  );
+  const filteredNodes = useFilteredItems(graph.data.nodes, nodeFilter, "label");
 
   return (
     <div className="node-section">
