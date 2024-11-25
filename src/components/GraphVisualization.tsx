@@ -18,7 +18,7 @@ const GraphVisualization: React.FC<GraphVisualizationProps> = ({ graph }) => {
   }, [graph]);
 
   return (
-    <div className="graph-section" aria-label="Graph visualization">
+    <div className="graph-section" data-testid="graph-visualization">
       <ForceGraph2D
         ref={fgRef}
         graphData={{

@@ -35,7 +35,7 @@ const FormInput: React.FC<FormInputProps> = ({
   };
 
   return (
-    <form className={className} onSubmit={onSubmit} role="form">
+    <form className={className} onSubmit={onSubmit} data-testId="form">
       <input
         type="text"
         value={sanitizedValue}

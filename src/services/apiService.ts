@@ -1,4 +1,3 @@
-// src/services/apiService.ts
 import { Graph, Node } from "../models/graphModel";
 
 // Fetch all graphs
@@ -46,7 +45,7 @@ export const createNode = async (
     throw new Error("Failed to create node");
   }
 
-  return await response.json(); // Return the created node with the generated ID
+  return await response.json();
 };
 
 // Update a node in a graph

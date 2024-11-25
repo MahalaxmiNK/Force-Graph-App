@@ -1,23 +1,40 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import viteCompression from "vite-plugin-compression";
 import { configDefaults } from "vitest/config";
 
 export default defineConfig({
-  plugins: [react()],
-  test: {
-    globals: true, // Enable global test functions like describe, it
-    environment: "jsdom", // Use jsdom for simulating browser environment
-    coverage: {
-      provider: "v8", // Or 'istanbul' for coverage reporting
-      reporter: ["text", "json", "html"],
-    },
-    server: {
-      deps: {
-        inline: ["aframe-extras"], // Inline aframe-extras package
+  plugins: [
+    react(),
+    viteCompression({
+      algorithm: "gzip",
+      threshold: 1025,
+      deleteOriginFile: false,
+    }),
+  ],
+  build: {
+    minify: "esbuild",
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            return "vendor";
+          }
+        },
       },
     },
-    setupFiles: ["./vitest.setup.ts"], // Setup file for global imports
-    include: ["tests/**/*.test.tsx", "tests/**/*.test.ts"], // Test file patterns
-    exclude: [...configDefaults.exclude], // Exclude default directories
+    cssCodeSplit: true,
+    sourcemap: false,
+  },
+  test: {
+    globals: true,
+    environment: "jsdom",
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json", "html"],
+    },
+    setupFiles: ["./vitest.setup.ts"],
+    include: ["tests/**/*.test.{ts,tsx}"],
+    exclude: [...configDefaults.exclude],
   },
 });
