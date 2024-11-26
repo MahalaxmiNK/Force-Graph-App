@@ -6,11 +6,14 @@ import Loader from "../ui/Loader";
 import "./GraphView.css";
 import GraphVisualization from "./GraphVisualization";
 import NodeOperations from "./NodeOperations";
+import AddEdgeModal from "./AddEdgeModal";
+import Button from "../ui/Button";
 
 const GraphView: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [graph, setGraph] = useState<Graph | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const loadGraph = async () => {
@@ -26,6 +29,14 @@ const GraphView: React.FC = () => {
     loadGraph();
   }, [id, navigate]);
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   if (!graph) return <Loader />;
 
   return (
@@ -39,11 +50,27 @@ const GraphView: React.FC = () => {
         <span className="arrow">&#8592;</span>
         Back to Graph List
       </button>
-      <h2>{graph.name}</h2>
+      <header className="header-section">
+        <h2>{graph.name}</h2>
+
+        <Button
+          type="button"
+          text="Add Edge"
+          className="add-edge-button"
+          onClick={openModal}
+        />
+      </header>
+
       <div className="main-content">
         <GraphVisualization graph={graph} />
         <NodeOperations graph={graph} setGraph={setGraph} />
       </div>
+      <AddEdgeModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        graph={graph}
+        setGraph={setGraph}
+      />
     </div>
   );
 };

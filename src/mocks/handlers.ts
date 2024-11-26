@@ -1,5 +1,5 @@
 import { http, HttpResponse } from "msw";
-import { Graph, Node } from "../models/graphModel";
+import { Edge, Graph, Node } from "../models/graphModel";
 import { graphs } from "./graphsData";
 
 // Initialize the Map with predefined data
@@ -69,7 +69,6 @@ export const handlers = [
   http.delete<{ id: string }>("/api/graphs/:id", ({ params }) => {
     const { id } = params;
     const graph = allGraphs.get(id);
-    // Return 404 if the graph doesn't exist
     if (!graph) {
       return new HttpResponse(null, { status: 404 });
     }
@@ -141,8 +140,6 @@ export const handlers = [
           statusText: "Node label is required",
         });
       }
-
-      // Update the node in the graph
       const nodeIndex = graph.data.nodes.findIndex(
         (node) => node.id === nodeId
       );
@@ -177,6 +174,64 @@ export const handlers = [
 
       const deletedNode = graph.data.nodes.splice(nodeIndex, 1)[0];
       return HttpResponse.json(deletedNode);
+    }
+  ),
+
+  // Add an edge to a graph
+  http.post<{ graphId: string }>(
+    "/api/graphs/:graphId/edges",
+    async ({ params, request }) => {
+      const { graphId } = params;
+      const graph = allGraphs.get(graphId);
+
+      if (!graph) {
+        return new HttpResponse(null, { status: 404 });
+      }
+
+      const newEdge = (await request.json()) as Edge;
+
+      // Check if the edge already exists
+      const edgeExists = graph.data.edges.some(
+        (edge) =>
+          edge.source === newEdge.source && edge.target === newEdge.target
+      );
+
+      if (edgeExists) {
+        return new HttpResponse(null, {
+          status: 400,
+          statusText: "Edge already exists",
+        });
+      }
+
+      graph.data.edges.push(newEdge);
+      return HttpResponse.json(newEdge, { status: 201 });
+    }
+  ),
+
+  // Delete an edge from a graph
+  http.delete<{ graphId: string; source: string; target: string }>(
+    "/api/graphs/:graphId/edges",
+    ({ params }) => {
+      const { graphId, source, target } = params;
+      const graph = allGraphs.get(graphId);
+
+      if (!graph) {
+        return new HttpResponse(null, { status: 404 });
+      }
+
+      const edgeIndex = graph.data.edges.findIndex(
+        (edge) => edge.source === source && edge.target === target
+      );
+
+      if (edgeIndex === -1) {
+        return new HttpResponse(null, {
+          status: 404,
+          statusText: "Edge not found",
+        });
+      }
+
+      const deletedEdge = graph.data.edges.splice(edgeIndex, 1)[0];
+      return HttpResponse.json(deletedEdge);
     }
   ),
 ];

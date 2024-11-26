@@ -22,3 +22,16 @@ export const deleteNodeFromGraph = (graph: Graph, nodeId: string): Graph => ({
     nodes: graph.data.nodes.filter((node) => node.id !== nodeId),
   },
 });
+
+export const deleteEdgesConnectedToNode = (
+  graph: Graph,
+  nodeId: string
+): Graph => {
+  const updatedEdges = graph.data.edges.filter(
+    (edge) => edge.source !== nodeId && edge.target !== nodeId
+  );
+  return {
+    ...graph,
+    data: { ...graph.data, edges: updatedEdges },
+  };
+};

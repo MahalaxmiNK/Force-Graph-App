@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Button from "../../ui/Button";
 import "./FormInput.css";
 
@@ -27,6 +27,10 @@ const FormInput: React.FC<FormInputProps> = ({
 }) => {
   const [sanitizedValue, setSanitizedValue] = useState(value);
 
+  useEffect(() => {
+    setSanitizedValue(value);
+  }, [value]);
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;
     const sanitized = sanitizeInput(rawValue);
@@ -35,7 +39,7 @@ const FormInput: React.FC<FormInputProps> = ({
   };
 
   return (
-    <form className={className} onSubmit={onSubmit} data-testId="form">
+    <form className={className} onSubmit={onSubmit} data-testid="form">
       <input
         type="text"
         value={sanitizedValue}

@@ -30,6 +30,27 @@ export const deleteGraph = async (id: string): Promise<void> => {
   if (!response.ok) throw new Error("Failed to delete graph");
 };
 
+//update the graph
+export const updateGraphApi = async (
+  id: string,
+  updatedGraph: Graph
+): Promise<Graph> => {
+  const response = await fetch(`/api/graphs/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updatedGraph),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to update graph: ${errorText}`);
+  }
+
+  return response.json(); // assuming the response body contains the updated graph
+};
+
 //Create new node
 export const createNode = async (
   graphId: string,
@@ -71,4 +92,42 @@ export const deleteNode = async (
     method: "DELETE",
   });
   if (!response.ok) throw new Error("Failed to delete node");
+};
+
+// Create a new edge in a graph
+export const createEdge = async (
+  graphId: string,
+  edge: { source: string; target: string }
+): Promise<{ source: string; target: string }> => {
+  const response = await fetch(`/api/graphs/${graphId}/edges`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(edge),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to create edge");
+  }
+
+  return await response.json();
+};
+
+// Delete an edge from a graph
+export const deleteEdge = async (
+  graphId: string,
+  source: string,
+  target: string
+): Promise<{ source: string; target: string }> => {
+  const response = await fetch(
+    `/api/graphs/${graphId}/edges?source=${source}&target=${target}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to delete edge");
+  }
+
+  return await response.json();
 };

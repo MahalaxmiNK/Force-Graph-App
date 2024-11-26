@@ -4,6 +4,7 @@ import {
   createNode,
   updateNode,
   deleteNode as deleteNodeAPI,
+  updateGraphApi,
 } from "../services/apiService";
 import {
   addNodeToGraph,
@@ -53,7 +54,7 @@ const NodeOperations: React.FC<NodeOperationsProps> = ({ graph, setGraph }) => {
       });
 
       handleGraphUpdate((g) => addNodeToGraph(g, createdNode));
-      setNewNode(""); // Clear input field
+      setNewNode("");
       setErrorMessage("");
     } catch (error) {
       console.error("Error adding node:", error);
@@ -83,6 +84,21 @@ const NodeOperations: React.FC<NodeOperationsProps> = ({ graph, setGraph }) => {
   const deleteNode = async (nodeId: string) => {
     try {
       await deleteNodeAPI(graph.id, nodeId);
+
+      const updatedEdges = graph.data.edges.filter(
+        (edge) => edge.source !== nodeId && edge.target !== nodeId
+      );
+
+      const updatedGraph = {
+        ...graph,
+        data: { ...graph.data, edges: updatedEdges },
+      };
+
+      const result = await updateGraphApi(graph.id, updatedGraph);
+      console.log(result);
+
+      setGraph(updatedGraph);
+
       handleGraphUpdate((g) => deleteNodeFromGraph(g, nodeId));
     } catch (error) {
       console.error("Error deleting node:", error);
