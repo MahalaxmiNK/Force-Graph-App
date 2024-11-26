@@ -51,4 +51,30 @@ test.describe("Graph View Page", () => {
     const oldNode = page.locator(`.node-list li:has-text("${nodeLabel}")`);
     await expect(oldNode).toHaveCount(0);
   });
+
+  test("should open and close the Add Edge modal", async ({ page }) => {
+    // Open the Add Edge modal
+    await page.click(".add-edge-modal-button");
+    await expect(page.locator(".modal-title")).toHaveText("Add Edge");
+
+    // Close the Add Edge modal
+    await page.click(".close-button");
+    await expect(page.locator(".modal-title")).not.toBeVisible();
+  });
+
+  test("should show error if nodes are not selected", async ({ page }) => {
+    // Open the Add Edge modal
+    await page.click(".add-edge-modal-button");
+
+    // Wait for the modal to be visible
+    await expect(page.locator(".modal-title")).toBeVisible();
+
+    // Click on Add Edge button without selecting nodes
+    await page.click(".add-edge-btn");
+
+    // Verify the error message
+    await expect(page.locator(".error")).toHaveText(
+      "Please select both source and target nodes."
+    );
+  });
 });
