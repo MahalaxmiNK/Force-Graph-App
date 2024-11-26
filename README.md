@@ -18,6 +18,8 @@ This project is built using **Vite**, **React**, and **Typescript**. The applica
 ## Technology Stack
 
 - **Frontend**: React, TypeScript
+- **Unit tests**: Vitest
+- **e2e tests**: Playwright
 - **Backend Simulation**: Mocked with **MSW (Mock Service Worker)** for in-memory data management (no database used).
 - **Styling**: Pure **CSS** and **HTML** (no external styling libraries).
 - **Graph Visualization**: `react-force-graph` for rendering force-directed graphs.
