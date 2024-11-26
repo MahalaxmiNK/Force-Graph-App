@@ -1,4 +1,4 @@
-# MALTEGO CODING CHALLENGE
+# FORCE-GRAPH-APP
 
 This project is built using **Vite**, **React**, and **Typescript**. The application provides features for managing and interacting with graphs, including adding, deleting, and filtering graphs, as well as viewing force-directed graphs.
 
