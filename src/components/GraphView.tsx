@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Graph } from "../models/graphModel";
 import { fetchGraphById } from "../services/apiService";
 import Loader from "../ui/Loader";
-import "./GraphView.css";
 import GraphVisualization from "./GraphVisualization";
 import NodeOperations from "./NodeOperations";
 import AddEdgeModal from "./AddEdgeModal";
 import Button from "../ui/Button";
+import { useGraphContext } from "../context/GraphContext";
+import "./GraphView.css";
 
 const GraphView: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [graph, setGraph] = useState<Graph | null>(null);
+  const { graph, setGraph } = useGraphContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const GraphView: React.FC = () => {
       }
     };
     loadGraph();
-  }, [id, navigate]);
+  }, [id, navigate, setGraph]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -62,8 +62,8 @@ const GraphView: React.FC = () => {
       </div>
 
       <div className="main-content">
-        <GraphVisualization graph={graph} />
-        <NodeOperations graph={graph} setGraph={setGraph} />
+        <GraphVisualization />
+        <NodeOperations />
       </div>
       <AddEdgeModal
         isOpen={isModalOpen}

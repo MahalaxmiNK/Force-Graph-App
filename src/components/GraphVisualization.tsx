@@ -1,17 +1,15 @@
 import React, { useRef, useEffect } from "react";
 import { ForceGraph2D, ForceGraphMethods } from "react-force-graph";
-import { Graph } from "../models/graphModel";
+import { useGraphContext } from "../context/GraphContext";
 
-interface GraphVisualizationProps {
-  graph: Graph;
-}
+const GraphVisualization: React.FC = () => {
+  const { graph } = useGraphContext();
 
-const GraphVisualization: React.FC<GraphVisualizationProps> = ({ graph }) => {
   const fgRef = useRef<ForceGraphMethods | null>(null);
 
   const graphData = {
-    nodes: JSON.parse(JSON.stringify(graph.data.nodes)),
-    links: JSON.parse(JSON.stringify(graph.data.edges || [])),
+    nodes: JSON.parse(JSON.stringify(graph?.data.nodes)),
+    links: JSON.parse(JSON.stringify(graph?.data.edges || [])),
   };
 
   useEffect(() => {

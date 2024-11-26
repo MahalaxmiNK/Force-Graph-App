@@ -1,3 +1,4 @@
+// src/components/NodeOperations.tsx
 import React, { useState } from "react";
 import { Graph, Node } from "../models/graphModel";
 import { createNode, updateNode, deleteNode } from "../services/apiService";
@@ -5,15 +6,12 @@ import { addNodeToGraph, updateNodeInGraph } from "../utils/graphUtils";
 import Button from "../ui/Button";
 import FormInput from "./shared/FormInput";
 import FilterInput from "./shared/FilterInput";
-import "./NodeOperations.css";
 import { useFilteredItems } from "../hooks/useFilteredItems";
+import { useGraphContext } from "../context/GraphContext";
+import "./NodeOperations.css";
 
-interface NodeOperationsProps {
-  graph: Graph;
-  setGraph: React.Dispatch<React.SetStateAction<Graph | null>>;
-}
-
-const NodeOperations: React.FC<NodeOperationsProps> = ({ graph, setGraph }) => {
+const NodeOperations: React.FC = () => {
+  const { graph, setGraph } = useGraphContext();
   const [newNode, setNewNode] = useState<string>("");
   const [nodeFilter, setNodeFilter] = useState<string>("");
   const [editingNode, setEditingNode] = useState<Node | null>(null);
@@ -33,20 +31,22 @@ const NodeOperations: React.FC<NodeOperationsProps> = ({ graph, setGraph }) => {
       return;
     }
 
-    if (graph.data.nodes.some((node) => node.label === trimmedNode)) {
+    if (graph?.data.nodes.some((node) => node.label === trimmedNode)) {
       setErrorMessage("A node with this label already exists");
       return;
     }
 
     try {
-      const createdNode: Node = await createNode(graph.id, {
-        label: trimmedNode,
-        id: "",
-      });
+      if (graph) {
+        const createdNode: Node = await createNode(graph.id, {
+          label: trimmedNode,
+          id: "",
+        });
 
-      handleGraphUpdate((g) => addNodeToGraph(g, createdNode));
-      setNewNode("");
-      setErrorMessage("");
+        handleGraphUpdate((g) => addNodeToGraph(g, createdNode));
+        setNewNode("");
+        setErrorMessage("");
+      }
     } catch (error) {
       console.error("Error adding node:", error);
       alert("Failed to add node");
@@ -62,10 +62,12 @@ const NodeOperations: React.FC<NodeOperationsProps> = ({ graph, setGraph }) => {
     const updatedNode = { ...editingNode, label: editNodeValue.trim() } as Node;
 
     try {
-      await updateNode(graph.id, editingNode!.id, updatedNode);
-      handleGraphUpdate((g) => updateNodeInGraph(g, updatedNode));
-      setEditingNode(null);
-      setEditNodeValue("");
+      if (graph) {
+        await updateNode(graph.id, editingNode!.id, updatedNode);
+        handleGraphUpdate((g) => updateNodeInGraph(g, updatedNode));
+        setEditingNode(null);
+        setEditNodeValue("");
+      }
     } catch (error) {
       console.error("Error editing node:", error);
       alert("Failed to update node");
@@ -91,8 +93,6 @@ const NodeOperations: React.FC<NodeOperationsProps> = ({ graph, setGraph }) => {
             },
           };
 
-          console.log(updatedGraph.data.edges);
-
           return updatedGraph;
         });
       } catch (error) {
@@ -102,7 +102,11 @@ const NodeOperations: React.FC<NodeOperationsProps> = ({ graph, setGraph }) => {
     }
   };
 
-  const filteredNodes = useFilteredItems(graph.data.nodes, nodeFilter, "label");
+  const filteredNodes = useFilteredItems(
+    graph?.data.nodes || [],
+    nodeFilter,
+    "label"
+  );
 
   return (
     <div className="node-section">
