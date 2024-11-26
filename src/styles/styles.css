@@ -1,0 +1,78 @@
+/* Colors */
+:root {
+  --color-primary: #ffb30f;
+  --color-secondary: #303849;
+  --color-tertiary: #1d242a;
+  --color-text: #ffffff;
+  --color-muted: #c1c3c7;
+  --color-error: #ef4444;
+  --color-text-dark: #000000;
+
+  /* Spacing */
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+
+  /* Typography */
+  --font-family: "Roboto", sans-serif;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.5rem;
+
+  /* Borders and Radius */
+  --border-radius-sm: 4px;
+  --border-radius-md: 6px;
+  --border-width: 1px;
+
+  /* Transitions */
+  --transition-fast: 0.3s ease;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color var(--transition-fast);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font: inherit;
+}
+
+input,
+textarea {
+  font-family: inherit;
+  color: inherit;
+  background: none;
+  border: var(--border-width) solid var(--color-muted);
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-sm);
+}
+
+input:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center;
+}
+.flex {
+  display: flex;
+}
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+.mt-sm {
+  margin-top: var(--spacing-sm);
+}
+.mb-sm {
+  margin-bottom: var(--spacing-sm);
+}
+.px-md {
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+}

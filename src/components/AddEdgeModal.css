@@ -1,0 +1,44 @@
+.modal-content {
+  text-align: center;
+  padding: 20px;
+}
+
+.modal-title {
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: var(--color-secondary);
+}
+
+.dropdown {
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.dropdown label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.dropdown select {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.add-edge-btn {
+  margin: 0 auto;
+}
+
+.add-edge-btn:disabled {
+  background-color: var(--color-secondary);
+  cursor: not-allowed;
+}
+
+.error {
+  color: var(--color-error);
+  font-size: 14px;
+  margin-top: 8px;
+}

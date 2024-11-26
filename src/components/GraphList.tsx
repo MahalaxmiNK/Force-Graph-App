@@ -1,97 +1,119 @@
-import React, { useState, useEffect, FormEvent } from "react";
+import React, { useState, useEffect, FormEvent, useCallback } from "react";
 import { NavLink } from "react-router-dom";
 import { Graph } from "../models/graphModel";
-import { MdOutlineDelete } from "react-icons/md";
+import FilterInput from "./shared/FilterInput";
+import FormInput from "./shared/FormInput";
+import { fetchGraphs, createGraph, deleteGraph } from "../services/apiService";
 import "./GraphList.css";
+import { useFilteredItems } from "../hooks/useFilteredItems";
 
 const GraphList: React.FC = () => {
   const [graphs, setGraphs] = useState<Graph[]>([]);
   const [filter, setFilter] = useState<string>("");
   const [newGraphName, setNewGraphName] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const fetchGraphs = async () => {
-    const response = await fetch("/api/graphs");
-    setGraphs(await response.json());
-  };
-
-  const deleteGraph = async (id: string) => {
-    await fetch(`/api/graphs/${id}`, { method: "DELETE" });
-    fetchGraphs();
-  };
-
-  const createGraph = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!newGraphName.trim()) {
-      alert("Graph name cannot be empty!");
-      return;
+  const loadGraphs = useCallback(async () => {
+    try {
+      const data = await fetchGraphs();
+      setGraphs(data);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to load graphs");
     }
-    const newGraph: Graph = {
-      id: "",
-      name: newGraphName,
-      data: {
-        nodes: [],
-        edges: [],
-      },
-    };
-    await fetch("/api/graphs", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newGraph),
-    });
-
-    setNewGraphName("");
-    fetchGraphs();
-  };
-
-  useEffect(() => {
-    fetchGraphs();
   }, []);
 
-  const filteredGraphs = graphs.filter((graph) =>
-    graph.name.toLowerCase().includes(filter.toLowerCase())
+  const handleCreateGraph = useCallback(
+    async (e: FormEvent) => {
+      e.preventDefault();
+      if (!newGraphName.trim()) {
+        setErrorMessage("Graph name cannot be empty!");
+        return;
+      }
+      const newGraph: Graph = {
+        id: "",
+        name: newGraphName,
+        data: { nodes: [], edges: [] },
+      };
+
+      try {
+        await createGraph(newGraph);
+        setNewGraphName("");
+        setErrorMessage("");
+        loadGraphs();
+      } catch (error) {
+        console.error(error);
+        alert("Failed to create graph");
+      }
+    },
+    [newGraphName, loadGraphs]
   );
 
-  return (
-    <div className="graph-list-container">
-      <h2>Graphs</h2>
-      <input
-        className="filter-input"
-        type="text"
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-        placeholder="Filter by name"
-      />
-      <form className="graph-list-form" onSubmit={createGraph}>
-        <input
-          type="text"
-          value={newGraphName}
-          onChange={(e) => setNewGraphName(e.target.value)}
-          placeholder="New Graph Name"
-        />
-        <button type="submit">Add Graph</button>
-      </form>
+  const handleDeleteGraph = useCallback(
+    async (id: string) => {
+      try {
+        await deleteGraph(id);
+        loadGraphs();
+      } catch (error) {
+        console.error(error);
+        alert("Failed to delete graph");
+      }
+    },
+    [loadGraphs]
+  );
 
+  useEffect(() => {
+    loadGraphs();
+  }, [loadGraphs]);
+
+  const filteredGraphs = useFilteredItems(graphs, filter, "name");
+
+  return (
+    <section className="graph-list-container" aria-label="Graph List Section">
+      <h2>Graphs</h2>
+      <FilterInput
+        value={filter}
+        onChange={setFilter}
+        placeholder="Filter by name"
+        className="filter-input"
+      />
+      <FormInput
+        value={newGraphName}
+        onChange={(value) => {
+          setNewGraphName(value);
+          setErrorMessage("");
+        }}
+        onSubmit={handleCreateGraph}
+        buttonText="Add Graph"
+        placeholder="New Graph Name"
+        className="graph-list-form"
+        errorMessage={errorMessage}
+      />
       <div className="graph-cards">
         {filteredGraphs.map((graph) => (
           <NavLink
             to={`/graph/${graph.id}`}
             key={graph.id}
             className="graph-card"
+            aria-label={`View details for graph ${graph.name}`}
           >
-            <h3>{graph.name}</h3>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault(); // Prevent Link navigation on button click
-                deleteGraph(graph.id);
-              }}
-            >
-              <MdOutlineDelete />
-            </button>
+            <article>
+              <h3>{graph.name}</h3>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleDeleteGraph(graph.id);
+                }}
+                aria-label={`Delete graph ${graph.name}`}
+              >
+                🗑
+              </button>
+            </article>
           </NavLink>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 
