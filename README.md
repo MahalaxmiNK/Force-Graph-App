@@ -1,50 +1,43 @@
-# React + TypeScript + Vite
+# MALTEGO CODING CHALLENGE
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project built using **Vite**, **React**, and **Typescript**. The application provides features for managing and interacting with graphs, including adding, deleting, and filtering graphs, as well as viewing force-directed graphs.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Display Graphs List**: View a list of all available graphs.
+- **Add New Graph**: Create and add new graphs to the application.
+- **Delete Graph**: Remove an existing graph from the list.
+- **Filter/Search Graph**: Search and filter graphs by name or other criteria.
+- **View Force-Directed Graph**: Navigate to a specific graph by `GraphID` to visualize it using a force-directed graph layout. This is implemented with the `react-force-graph` library.
+- **Node Management**:
+  - **Create Node**: Add new nodes to the graph.
+  - **Update Node**: Modify the name of an existing node.
+  - **Delete Node**: Remove a node from the graph.
+  - **Bonus Feature – Add Edges**: Create edges between nodes to establish connections within the graph.
 
-## Expanding the ESLint configuration
+## Technology Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Frontend**: React, TypeScript
+- **Backend Simulation**: Mocked with **MSW (Mock Service Worker)** for in-memory data management (no database used).
+- **Styling**: Pure **CSS** and **HTML** (no external styling libraries).
+- **Graph Visualization**: `react-force-graph` for rendering force-directed graphs.
 
-- Configure the top-level `parserOptions` property like this:
+## Project Setup
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### Prerequisites
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Ensure that you have the following installed:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- **Node.js** (v14 or later)
+- **npm** (or **yarn**)
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- Go to project directory
+  **npm install**
+- to run the application
+  **npm run dev**
+
+- to run the unit tests
+  **npm run test**
+
+- to run the e2e tests (make sure you are running application)
+  **npm run e2e**
