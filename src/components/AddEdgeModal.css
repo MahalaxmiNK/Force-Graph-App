@@ -29,17 +29,6 @@
 }
 
 .add-edge-btn {
-  display: inline-block;
-  padding: 10px 16px;
-  font-size: 14px;
-  font-weight: bold;
-  color: var(--color-text-dark);
-  background-color: var(--color-primary);
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 100%;
-  max-width: 200px;
   margin: 0 auto;
 }
 

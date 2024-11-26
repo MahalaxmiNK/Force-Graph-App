@@ -7,10 +7,10 @@ import {
   act,
 } from "@testing-library/react";
 import { vi } from "vitest";
-import { BrowserRouter as Router } from "react-router-dom";
 import GraphView from "../../src/components/GraphView";
 import { fetchGraphById } from "../../src/services/apiService";
 import { graphs } from "../../src/mocks/graphsData";
+import { GraphProvider } from "../../src/context/GraphContext";
 
 // Mock API call
 vi.mock("../../src/services/apiService", () => ({
@@ -37,12 +37,15 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
+// Mock window.alert for testing
+global.alert = vi.fn();
+
 describe("GraphView Component", () => {
   it("renders loader when graph is null", async () => {
     render(
-      <Router>
+      <GraphProvider>
         <GraphView />
-      </Router>
+      </GraphProvider>
     );
 
     expect(screen.getByTestId("loader-container")).toBeInTheDocument();
@@ -54,12 +57,13 @@ describe("GraphView Component", () => {
 
     await act(async () => {
       render(
-        <Router>
+        <GraphProvider>
           <GraphView />
-        </Router>
+        </GraphProvider>
       );
     });
 
+    // Wait for the graph data to be rendered
     await waitFor(() => {
       expect(screen.getByText(mockGraph.name)).toBeInTheDocument();
       expect(screen.getByText("Mocked GraphVisualization")).toBeInTheDocument();
@@ -72,12 +76,13 @@ describe("GraphView Component", () => {
 
     await act(async () => {
       render(
-        <Router>
+        <GraphProvider>
           <GraphView />
-        </Router>
+        </GraphProvider>
       );
     });
 
+    // Wait for the API error to be handled
     await waitFor(() => {
       expect(
         screen.queryByText("Mocked GraphVisualization")
@@ -86,6 +91,7 @@ describe("GraphView Component", () => {
         screen.queryByText("Mocked NodeOperations")
       ).not.toBeInTheDocument();
       expect(mockNavigate).toHaveBeenCalledWith("/");
+      expect(global.alert).toHaveBeenCalledWith("Failed to load graph");
     });
   });
 
@@ -95,12 +101,13 @@ describe("GraphView Component", () => {
 
     await act(async () => {
       render(
-        <Router>
+        <GraphProvider>
           <GraphView />
-        </Router>
+        </GraphProvider>
       );
     });
 
+    // Wait for the graph data to be rendered
     await waitFor(() => screen.getByText(mockGraph.name));
 
     const backButton = screen.getByText("Back to Graph List");

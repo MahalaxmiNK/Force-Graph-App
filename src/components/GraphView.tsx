@@ -56,7 +56,7 @@ const GraphView: React.FC = () => {
         <Button
           type="button"
           text="Add Edge"
-          className="add-edge-button"
+          className="add-edge-modal-button"
           onClick={openModal}
         />
       </div>

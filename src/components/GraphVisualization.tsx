@@ -8,8 +8,8 @@ const GraphVisualization: React.FC = () => {
   const fgRef = useRef<ForceGraphMethods | null>(null);
 
   const graphData = {
-    nodes: JSON.parse(JSON.stringify(graph?.data.nodes)),
-    links: JSON.parse(JSON.stringify(graph?.data.edges || [])),
+    nodes: JSON.parse(JSON.stringify(graph?.data?.nodes || [])),
+    links: JSON.parse(JSON.stringify(graph?.data?.edges || [])),
   };
 
   useEffect(() => {

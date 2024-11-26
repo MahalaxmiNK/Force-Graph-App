@@ -3,6 +3,7 @@ import { Graph } from "../models/graphModel";
 import Modal from "../ui/Modal";
 import { createEdge } from "../services/apiService";
 import "./AddEdgeModal.css";
+import Button from "../ui/Button";
 
 interface AddEdgeModalProps {
   isOpen: boolean;
@@ -114,14 +115,11 @@ const AddEdgeModal: React.FC<AddEdgeModalProps> = ({
         </select>
       </div>
 
-      <button
-        className="add-edge-btn"
+      <Button
+        text={loading ? "Adding" : "Add Edge"}
         onClick={handleAddEdge}
-        disabled={loading}
-        role="button"
-      >
-        {loading ? "Adding..." : "Add Edge"}
-      </button>
+        className="add-edge-btn"
+      />
 
       {error && <p className="error">{error}</p>}
     </Modal>
