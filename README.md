@@ -1,13 +1,13 @@
 # MALTEGO CODING CHALLENGE
 
-This project built using **Vite**, **React**, and **Typescript**. The application provides features for managing and interacting with graphs, including adding, deleting, and filtering graphs, as well as viewing force-directed graphs.
+This project is built using **Vite**, **React**, and **Typescript**. The application provides features for managing and interacting with graphs, including adding, deleting, and filtering graphs, as well as viewing force-directed graphs.
 
 ## Features
 
-- **Display Graphs List**: View a list of all available graphs.
+- **Display Graph List**: View a list of all available graphs.
 - **Add New Graph**: Create and add new graphs to the application.
 - **Delete Graph**: Remove an existing graph from the list.
-- **Filter/Search Graph**: Search and filter graphs by name or other criteria.
+- **Filter/Search Graph**: Search and filter graphs by name.
 - **View Force-Directed Graph**: Navigate to a specific graph by `GraphID` to visualize it using a force-directed graph layout. This is implemented with the `react-force-graph` library.
 - **Node Management**:
   - **Create Node**: Add new nodes to the graph.
