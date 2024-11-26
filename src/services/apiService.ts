@@ -111,23 +111,3 @@ export const createEdge = async (
 
   return await response.json();
 };
-
-// Delete an edge from a graph
-export const deleteEdge = async (
-  graphId: string,
-  source: string,
-  target: string
-): Promise<{ source: string; target: string }> => {
-  const response = await fetch(
-    `/api/graphs/${graphId}/edges?source=${source}&target=${target}`,
-    {
-      method: "DELETE",
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error("Failed to delete edge");
-  }
-
-  return await response.json();
-};

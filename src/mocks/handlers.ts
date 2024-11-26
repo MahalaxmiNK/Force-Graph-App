@@ -204,33 +204,6 @@ export const handlers = [
       return HttpResponse.json(newEdge, { status: 201 });
     }
   ),
-
-  // Delete an edge from a graph
-  http.delete<{ graphId: string; source: string; target: string }>(
-    "/api/graphs/:graphId/edges",
-    ({ params }) => {
-      const { graphId, source, target } = params;
-      const graph = allGraphs.get(graphId);
-
-      if (!graph) {
-        return new HttpResponse(null, { status: 404 });
-      }
-
-      const edgeIndex = graph.data.edges.findIndex(
-        (edge) => edge.source === source && edge.target === target
-      );
-
-      if (edgeIndex === -1) {
-        return new HttpResponse(null, {
-          status: 404,
-          statusText: "Edge not found",
-        });
-      }
-
-      const deletedEdge = graph.data.edges.splice(edgeIndex, 1)[0];
-      return HttpResponse.json(deletedEdge);
-    }
-  ),
 ];
 
 export default handlers;

@@ -1,106 +1,31 @@
-// src/components/NodeOperations.tsx
-import React, { useState } from "react";
-import { Graph, Node } from "../models/graphModel";
-import { createNode, updateNode, deleteNode } from "../services/apiService";
-import { addNodeToGraph, updateNodeInGraph } from "../utils/graphUtils";
-import Button from "../ui/Button";
-import FormInput from "./shared/FormInput";
-import FilterInput from "./shared/FilterInput";
-import { useFilteredItems } from "../hooks/useFilteredItems";
+import React from "react";
 import { useGraphContext } from "../context/GraphContext";
+import { useNodeOperations } from "../hooks/useNodeOperations";
+import { useFilteredItems } from "../hooks/useFilteredItems";
+import FilterInput from "./shared/FilterInput";
+import NodeEditingForm from "./shared/NodeEditingForm";
 import "./NodeOperations.css";
+import FormInput from "./shared/FormInput";
 
 const NodeOperations: React.FC = () => {
   const { graph, setGraph } = useGraphContext();
-  const [newNode, setNewNode] = useState<string>("");
-  const [nodeFilter, setNodeFilter] = useState<string>("");
-  const [editingNode, setEditingNode] = useState<Node | null>(null);
-  const [editNodeValue, setEditNodeValue] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState<string>("");
-
-  const handleGraphUpdate = (updater: (graph: Graph) => Graph) => {
-    setGraph((prev) => (prev ? updater(prev) : prev));
-  };
-
-  const addNode = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const trimmedNode = newNode.trim();
-
-    if (!trimmedNode) {
-      setErrorMessage("Node name cannot be empty!");
-      return;
-    }
-
-    if (graph?.data.nodes.some((node) => node.label === trimmedNode)) {
-      setErrorMessage("A node with this label already exists");
-      return;
-    }
-
-    try {
-      if (graph) {
-        const createdNode: Node = await createNode(graph.id, {
-          label: trimmedNode,
-          id: "",
-        });
-
-        handleGraphUpdate((g) => addNodeToGraph(g, createdNode));
-        setNewNode("");
-        setErrorMessage("");
-      }
-    } catch (error) {
-      console.error("Error adding node:", error);
-      alert("Failed to add node");
-    }
-  };
-
-  const editNode = async () => {
-    if (!editNodeValue.trim()) {
-      setErrorMessage("Node name cannot be empty");
-      return;
-    }
-
-    const updatedNode = { ...editingNode, label: editNodeValue.trim() } as Node;
-
-    try {
-      if (graph) {
-        await updateNode(graph.id, editingNode!.id, updatedNode);
-        handleGraphUpdate((g) => updateNodeInGraph(g, updatedNode));
-        setEditingNode(null);
-        setEditNodeValue("");
-      }
-    } catch (error) {
-      console.error("Error editing node:", error);
-      alert("Failed to update node");
-    }
-  };
-
-  const handleDeleteNode = async (nodeId: string) => {
-    if (graph) {
-      try {
-        await deleteNode(graph.id, nodeId);
-
-        setGraph((prevGraph) => {
-          if (!prevGraph) return null;
-
-          const updatedGraph = {
-            ...prevGraph,
-            data: {
-              ...prevGraph.data,
-              nodes: prevGraph.data.nodes.filter((node) => node.id !== nodeId),
-              edges: prevGraph.data.edges.filter(
-                (edge) => edge.source !== nodeId && edge.target !== nodeId
-              ),
-            },
-          };
-
-          return updatedGraph;
-        });
-      } catch (error) {
-        console.error("Error deleting node:", error);
-        alert("Failed to delete node");
-      }
-    }
-  };
+  const {
+    newNode,
+    setNewNode,
+    nodeFilter,
+    setNodeFilter,
+    editingNode,
+    setEditingNode,
+    editNodeValue,
+    setEditNodeValue,
+    editNodeErrorMessage,
+    setEditNodeErrorMessage,
+    addNodeErrorMessage,
+    setAddNodeErrorMessage,
+    addNode,
+    editNode,
+    handleDeleteNode,
+  } = useNodeOperations(graph, setGraph);
 
   const filteredNodes = useFilteredItems(
     graph?.data.nodes || [],
@@ -122,13 +47,13 @@ const NodeOperations: React.FC = () => {
           value={newNode}
           onChange={(value) => {
             setNewNode(value);
-            setErrorMessage("");
+            setAddNodeErrorMessage("");
           }}
           onSubmit={addNode}
           buttonText="Add Node"
           placeholder="Enter new node name"
           className="add-node-form"
-          errorMessage={errorMessage}
+          errorMessage={addNodeErrorMessage}
         />
       </div>
 
@@ -160,31 +85,20 @@ const NodeOperations: React.FC = () => {
               </button>
             </div>
             {editingNode?.id === node.id && (
-              <div className="edit-form">
-                <FormInput
-                  value={editNodeValue}
-                  onChange={(value) => {
-                    setEditNodeValue(value);
-                    setErrorMessage("");
-                  }}
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    editNode();
-                  }}
-                  buttonText="Save"
-                  placeholder="Edit node name"
-                  errorMessage={errorMessage}
-                />
-                <Button
-                  text="Cancel"
-                  type="reset"
-                  ariaLabel="Cancel"
-                  onClick={() => {
-                    setEditingNode(null);
-                    setEditNodeValue("");
-                  }}
-                />
-              </div>
+              <NodeEditingForm
+                editNodeValue={editNodeValue}
+                setEditNodeValue={setEditNodeValue}
+                editNodeErrorMessage={editNodeErrorMessage}
+                setEditNodeErrorMessage={setEditNodeErrorMessage}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  editNode();
+                }}
+                onCancel={() => {
+                  setEditingNode(null);
+                  setEditNodeValue("");
+                }}
+              />
             )}
           </li>
         ))}

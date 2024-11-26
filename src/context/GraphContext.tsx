@@ -1,17 +1,13 @@
-// src/context/GraphContext.tsx
 import React, { createContext, useState, ReactNode, useContext } from "react";
 import { Graph } from "../models/graphModel";
 
-// Define the context type
 interface GraphContextType {
   graph: Graph | null;
   setGraph: React.Dispatch<React.SetStateAction<Graph | null>>;
 }
 
-// Create a default context with `null` graph
 const GraphContext = createContext<GraphContextType | undefined>(undefined);
 
-// Context provider component
 export const GraphProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
