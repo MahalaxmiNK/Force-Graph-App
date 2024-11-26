@@ -13,7 +13,7 @@ const App: React.FC = () => {
     <Router>
       <GraphProvider>
         <header>
-          <h1>Maltego Coding Challenge</h1>
+          <h1>Force Graph App</h1>
           <nav>
             <Link to="/">Home</Link>
           </nav>
