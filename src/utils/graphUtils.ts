@@ -15,23 +15,17 @@ export const updateNodeInGraph = (graph: Graph, updatedNode: Node): Graph => ({
   },
 });
 
-export const deleteNodeFromGraph = (graph: Graph, nodeId: string): Graph => ({
-  ...graph,
-  data: {
-    ...graph.data,
-    nodes: graph.data.nodes.filter((node) => node.id !== nodeId),
-  },
-});
-
-export const deleteEdgesConnectedToNode = (
-  graph: Graph,
-  nodeId: string
-): Graph => {
+export const deleteNodeFromGraph = (graph: Graph, nodeId: string): Graph => {
   const updatedEdges = graph.data.edges.filter(
     (edge) => edge.source !== nodeId && edge.target !== nodeId
   );
+
   return {
     ...graph,
-    data: { ...graph.data, edges: updatedEdges },
+    data: {
+      ...graph.data,
+      nodes: graph.data.nodes.filter((node) => node.id !== nodeId),
+      edges: updatedEdges, // Update edges
+    },
   };
 };

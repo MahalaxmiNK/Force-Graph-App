@@ -156,27 +156,24 @@ export const handlers = [
   ),
 
   // Delete a node from a graph
-  http.delete<{ graphId: string; nodeId: string }>(
-    "/api/graphs/:graphId/nodes/:nodeId",
+  http.delete<{ id: string; nodeId: string }>(
+    "/api/graphs/:id/nodes/:nodeId",
     ({ params }) => {
-      const { graphId, nodeId } = params;
-      const graph = allGraphs.get(graphId);
-      if (!graph) {
-        return new HttpResponse(null, { status: 404 });
-      }
+      const { id, nodeId } = params;
+      const graph = allGraphs.get(id);
+      if (!graph) return new HttpResponse(null, { status: 404 });
 
-      const nodeIndex = graph.data.nodes.findIndex(
-        (node) => node.id === nodeId
+      // Remove the node
+      graph.data.nodes = graph.data.nodes.filter((node) => node.id !== nodeId);
+
+      // Remove edges associated with the node
+      graph.data.edges = graph.data.edges.filter(
+        (edge) => edge.source !== nodeId && edge.target !== nodeId
       );
-      if (nodeIndex === -1) {
-        return new HttpResponse(null, { status: 404 });
-      }
 
-      const deletedNode = graph.data.nodes.splice(nodeIndex, 1)[0];
-      return HttpResponse.json(deletedNode);
+      return HttpResponse.json({}, { status: 200 });
     }
   ),
-
   // Add an edge to a graph
   http.post<{ graphId: string }>(
     "/api/graphs/:graphId/edges",

@@ -1,16 +1,7 @@
 import React, { useState } from "react";
 import { Graph, Node } from "../models/graphModel";
-import {
-  createNode,
-  updateNode,
-  deleteNode as deleteNodeAPI,
-  updateGraphApi,
-} from "../services/apiService";
-import {
-  addNodeToGraph,
-  updateNodeInGraph,
-  deleteNodeFromGraph,
-} from "../utils/graphUtils";
+import { createNode, updateNode, deleteNode } from "../services/apiService";
+import { addNodeToGraph, updateNodeInGraph } from "../utils/graphUtils";
 import Button from "../ui/Button";
 import FormInput from "./shared/FormInput";
 import FilterInput from "./shared/FilterInput";
@@ -81,28 +72,33 @@ const NodeOperations: React.FC<NodeOperationsProps> = ({ graph, setGraph }) => {
     }
   };
 
-  const deleteNode = async (nodeId: string) => {
-    try {
-      await deleteNodeAPI(graph.id, nodeId);
+  const handleDeleteNode = async (nodeId: string) => {
+    if (graph) {
+      try {
+        await deleteNode(graph.id, nodeId);
 
-      const updatedEdges = graph.data.edges.filter(
-        (edge) => edge.source !== nodeId && edge.target !== nodeId
-      );
+        setGraph((prevGraph) => {
+          if (!prevGraph) return null;
 
-      const updatedGraph = {
-        ...graph,
-        data: { ...graph.data, edges: updatedEdges },
-      };
+          const updatedGraph = {
+            ...prevGraph,
+            data: {
+              ...prevGraph.data,
+              nodes: prevGraph.data.nodes.filter((node) => node.id !== nodeId),
+              edges: prevGraph.data.edges.filter(
+                (edge) => edge.source !== nodeId && edge.target !== nodeId
+              ),
+            },
+          };
 
-      const result = await updateGraphApi(graph.id, updatedGraph);
-      console.log(result);
+          console.log(updatedGraph.data.edges);
 
-      setGraph(updatedGraph);
-
-      handleGraphUpdate((g) => deleteNodeFromGraph(g, nodeId));
-    } catch (error) {
-      console.error("Error deleting node:", error);
-      alert("Failed to delete node");
+          return updatedGraph;
+        });
+      } catch (error) {
+        console.error("Error deleting node:", error);
+        alert("Failed to delete node");
+      }
     }
   };
 
@@ -152,7 +148,7 @@ const NodeOperations: React.FC<NodeOperationsProps> = ({ graph, setGraph }) => {
                 ✏️
               </button>
               <button
-                onClick={() => deleteNode(node.id)}
+                onClick={() => handleDeleteNode(node.id)}
                 aria-label={`Delete node ${node.label}`}
                 className="delete-button"
               >

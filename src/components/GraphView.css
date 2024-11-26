@@ -44,4 +44,8 @@
   margin-bottom: 1rem;
   margin-top: 1rem;
   flex-wrap: wrap;
+  background-color: var(--color-tertiary);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
 }

@@ -9,6 +9,11 @@ interface GraphVisualizationProps {
 const GraphVisualization: React.FC<GraphVisualizationProps> = ({ graph }) => {
   const fgRef = useRef<ForceGraphMethods | null>(null);
 
+  const graphData = {
+    nodes: JSON.parse(JSON.stringify(graph.data.nodes)),
+    links: JSON.parse(JSON.stringify(graph.data.edges || [])),
+  };
+
   useEffect(() => {
     // Recenter the view and stop engine simulation after stabilization
     const forceGraph = fgRef.current;
@@ -21,10 +26,7 @@ const GraphVisualization: React.FC<GraphVisualizationProps> = ({ graph }) => {
     <div className="graph-section" data-testid="graph-visualization">
       <ForceGraph2D
         ref={fgRef}
-        graphData={{
-          nodes: graph.data.nodes,
-          links: graph.data.edges || [],
-        }}
+        graphData={graphData}
         height={580}
         width={780}
         nodeLabel={(node) => node.label}

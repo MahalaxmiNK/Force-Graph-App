@@ -50,7 +50,7 @@ const GraphView: React.FC = () => {
         <span className="arrow">&#8592;</span>
         Back to Graph List
       </button>
-      <header className="header-section">
+      <div className="header-section">
         <h2>{graph.name}</h2>
 
         <Button
@@ -59,7 +59,7 @@ const GraphView: React.FC = () => {
           className="add-edge-button"
           onClick={openModal}
         />
-      </header>
+      </div>
 
       <div className="main-content">
         <GraphVisualization graph={graph} />
